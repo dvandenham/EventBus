@@ -1,0 +1,28 @@
+plugins {
+	id "java"
+	id "maven-publish"
+}
+
+publishing {
+	repositories {
+		maven {
+			name = "Xanadu"
+			url = "https://repo.xeromeda.com/${(System.getenv("VERSION") ?: "SNAPSHOT").contains("SNAPSHOT") ? "snapshots" : "releases"}"
+			authentication {
+				basic(BasicAuthentication)
+			}
+			credentials {
+				username = System.getenv("MAVEN_NAME") ?: getProperty("XanaduUsername")
+				password = System.getenv("MAVEN_SECRET") ?: getProperty("XanaduPassword")
+			}
+		}
+	}
+	publications {
+		maven(MavenPublication) {
+			groupId = "com.example" // CHANGE ME!
+			artifactId = "example"  // CHANGE ME!
+			version = System.getenv("VERSION")
+			from components.java
+		}
+	}
+}
