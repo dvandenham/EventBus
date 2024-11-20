@@ -1,10 +1,9 @@
-# TemplateXanaduJava
-Template repository for Java based projects with Xanadu Maven publishing
+# EventBus
 
-## DO NOT FORGET
- - To change `groupId` and `artifactId` in `build.gradle`
- - To add the `MAVEN_NAME` and `MAVEN_SECRET` repository secrets
+[![Build & Publish](https://github.com/dvandenham/EventBus/actions/workflows/gradle-publish.yml/badge.svg)](https://github.com/dvandenham/EventBus/actions/workflows/gradle-publish.yml)
+![Latest Release](https://img.shields.io/github/v/release/dvandenham/EventBus?label=Release)
+![GitHub Pre-Release](https://img.shields.io/github/v/release/dvandenham/EventBus?include_prereleases&label=Pre-release)
 
-## Publishing
-To publish to Xanadu, make a release and name it using `semver`.  
-To release to the snapshots repository, append `-SNAPSHOT` to the release name.
+A simple and fast EventBus for Java
+
+[Download it from Xanadu](https://repo.xeromeda.com/#/releases/nl/appelgebakje22/eventbus)
