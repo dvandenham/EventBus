@@ -1,3 +1,4 @@
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import nl.appelgebakje22.eventbus.EventBus;
 import nl.appelgebakje22.eventbus.SubscriberAlreadyRegisteredException;
@@ -6,7 +7,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import test.EmptyObjectSubscriber;
 import test.InvalidObjectSubscriber;
+import test.InvalidStaticObjectSubscriber;
 import test.ModernSubscribers;
+import test.StaticObjectSubscriber;
 import test.TestEvent;
 import test.ValidObjectSubscriber;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -16,11 +19,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SubscriberTest {
 
+	private static final AtomicInteger BUS_ID = new AtomicInteger();
 	private static EventBus bus;
 
 	@BeforeEach
 	void makeBus() {
-		bus = EventBus.getOrCreateBus(null);
+		bus = EventBus.getOrCreateBus(String.valueOf(BUS_ID.getAndIncrement()));
 	}
 
 	@Test
@@ -58,6 +62,21 @@ public class SubscriberTest {
 		assertThrows(SubscriberAlreadyRegisteredException.class, () -> bus.register(o));
 		assertDoesNotThrow(token::unsubscribe);
 		assertDoesNotThrow(() -> bus.register(o));
+	}
+
+	@Test
+	void testRegisterValidStatic() {
+		assertDoesNotThrow(() -> bus.register(StaticObjectSubscriber.class));
+	}
+
+	@Test
+	void testRegisterStaticButIsNot() {
+		assertThrows(IllegalArgumentException.class, () -> bus.register(ValidObjectSubscriber.class));
+	}
+
+	@Test
+	void testRegisterNotStaticButIs() {
+		assertThrows(IllegalArgumentException.class, () -> bus.register(new InvalidStaticObjectSubscriber()));
 	}
 
 	@Test
